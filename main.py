@@ -1,6 +1,8 @@
 import csv
 import argparse
+import timeit
 
+start_time = timeit.default_timer()
 
 def l2(p, q):
     ''' Takes two vectors, and calculates their distance in l2 space '''
@@ -69,17 +71,26 @@ parser.add_argument('query_path')
 parser.add_argument('space')
 parser.add_argument('k', type=int)
 parser.add_argument('results_path')
+parser.add_argument('--verbose', action='store_true')
 args = vars(parser.parse_args())
 
 # convert args to python objects
 reader = IOReader()
-index_vectors = reader.read_index(args['index_path'])
-query_vectors = reader.read_query(args['query_path'])
+index_path = args['index_path']
+query_path = args['query_path']
+index_vectors = reader.read_index(index_path)
+query_vectors = reader.read_query(query_path)
 space = args['space']
 k = args['k']
 results_path = args['results_path']
+is_verbose = args['verbose']
 
 # write results to file
 results = [index_vectors.search(q, k, space) for q in query_vectors]
 writer = IOWriter()
 writer.write_results(results_path, results)
+
+end_time = timeit.default_timer()
+time_elapsed = end_time - start_time
+if is_verbose:
+    print('time_elapsed: ', time_elapsed)
