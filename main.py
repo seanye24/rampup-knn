@@ -1,4 +1,5 @@
 import csv
+import argparse
 
 
 def l2(p, q):
@@ -56,4 +57,11 @@ class IOWriter:
             vector_writer.writerows(results)
 
 
-IOWriter().write_results('output.csv', [(1, 2, 3), (4, 5, 6), (7, 8, 9)])
+# Parse command line args
+parser = argparse.ArgumentParser(description='Process command line arguments.')
+parser.add_argument('index_path')
+parser.add_argument('query_path')
+parser.add_argument('space')
+parser.add_argument('k', type=int)
+parser.add_argument('results_path')
+args = vars(parser.parse_args())
