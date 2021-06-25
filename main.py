@@ -26,17 +26,17 @@ class Index:
         '''
         spaces = {'l2': l2}
         space_f = spaces[space]
-        results = [(iv, space_f(iv, query_vector))
-                   for iv in self.__index_vectors]
+        results = [(i, space_f(iv, query_vector))
+                   for i, iv in enumerate(self.__index_vectors)]
 
         # select the k-nearest vectors
         nearest_vectors = []
         for _ in range(k):
-            min_vector, min_vector_dist = results[0]
-            for iv, iv_dist in results:
-                if not iv in nearest_vectors and iv_dist < min_vector_dist:
-                    min_vector, min_vector_dist = iv, iv_dist
-            nearest_vectors.append(min_vector)
+            min_i, min_dist = results[0]
+            for i, dist in results:
+                if not i in nearest_vectors and dist < min_dist:
+                    min_i, min_dist = i, dist
+            nearest_vectors.append(min_i)
         return nearest_vectors
 
 
@@ -78,3 +78,5 @@ query_vectors = reader.read_query(args['query_path'])
 space = args['space']
 k = args['k']
 results_path = args['results_path']
+
+# write results to file
