@@ -49,6 +49,7 @@ class IOReader:
             return index_vectors
 
     '''Reads data from csv and creates an Index'''
+
     def read_index(self, csv_path):
         return Index(self.read_query(csv_path))
 
@@ -69,3 +70,11 @@ parser.add_argument('space')
 parser.add_argument('k', type=int)
 parser.add_argument('results_path')
 args = vars(parser.parse_args())
+
+# convert args to python objects
+reader = IOReader()
+index_vectors = reader.read_index(args['index_path'])
+query_vectors = reader.read_query(args['query_path'])
+space = args['space']
+k = args['k']
+results_path = args['results_path']
