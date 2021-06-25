@@ -41,12 +41,16 @@ class Index:
 
 
 class IOReader:
-    '''Reads data from csv and creates an Index'''
-    def read_index(self, csv_path):
+    '''Reads data from csv and return list of vectors'''
+    def read_query(self, csv_path):
         with open(csv_path, newline='') as csvfile:
             vector_reader = csv.reader(csvfile)
             index_vectors = [tuple(vector) for vector in vector_reader]
-            return Index(index_vectors)
+            return index_vectors
+
+    '''Reads data from csv and creates an Index'''
+    def read_index(self, csv_path):
+        return Index(self.read_query(csv_path))
 
 
 class IOWriter:
@@ -57,7 +61,7 @@ class IOWriter:
             vector_writer.writerows(results)
 
 
-# Parse command line args
+# parse command line args
 parser = argparse.ArgumentParser(description='Process command line arguments.')
 parser.add_argument('index_path')
 parser.add_argument('query_path')
