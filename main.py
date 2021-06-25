@@ -45,7 +45,7 @@ class IOReader:
     def read_query(self, csv_path):
         with open(csv_path, newline='') as csvfile:
             vector_reader = csv.reader(csvfile)
-            index_vectors = [tuple(vector) for vector in vector_reader]
+            index_vectors = [tuple([float(i) for i in vector]) for vector in vector_reader]
             return index_vectors
 
     '''Reads data from csv and creates an Index'''
@@ -80,3 +80,6 @@ k = args['k']
 results_path = args['results_path']
 
 # write results to file
+results = [index_vectors.search(q, k, space) for q in query_vectors]
+writer = IOWriter()
+writer.write_results(results_path, results)
