@@ -1,5 +1,6 @@
-import csv
 import argparse
+import csv
+import sys
 import timeit
 
 start_time = timeit.default_timer()
@@ -33,12 +34,13 @@ class Index:
 
         # select the k-nearest vectors
         nearest_vectors = []
+        min_i, min_dist = results[0]
         for _ in range(k):
-            min_i, min_dist = results[0]
             for i, dist in results:
-                if not i in nearest_vectors and dist < min_dist:
+                if not (i in nearest_vectors) and dist < min_dist:
                     min_i, min_dist = i, dist
             nearest_vectors.append(min_i)
+            min_dist = sys.maxsize
         return nearest_vectors
 
 
